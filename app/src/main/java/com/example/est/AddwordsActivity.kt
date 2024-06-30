@@ -7,33 +7,38 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.textfield.TextInputEditText
+import org.json.JSONArray
+import org.json.JSONObject
 //import com.google.android.material.textfield.TextInputLayout
 import java.io.File
 
 class AddwordsActivity : AppCompatActivity() {
-
-    data class Wenua_pair(
-        val wen: String,
-        val wua: String
-    )
-
-    val wenua = mutableListOf<Wenua_pair>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_addwords)
 
-        val tiet_worden : TextInputEditText = findViewById(R.id.tiet_worden)
-        val tiet_wordua : TextInputEditText = findViewById(R.id.tiet_wordua)
-//        var til_worden :TextInputLayout = findViewById(R.id.til_worden)
-//        var til_wordua :TextInputLayout = findViewById(R.id.til_wordua)
+        val tiet_p1 : TextInputEditText = findViewById(R.id.tiet_property1)
+        val tiet_p2 : TextInputEditText = findViewById(R.id.tiet_property2)
+        val tiet_p3 : TextInputEditText = findViewById(R.id.tiet_property3)
+        val tiet_p4 : TextInputEditText = findViewById(R.id.tiet_property4)
+        val tiet_p5 : TextInputEditText = findViewById(R.id.tiet_property5)
         val btn_addword : Button = findViewById(R.id.btn_add_word)
 
 
         btn_addword.setOnClickListener{
-            wenua.add(Wenua_pair(tiet_worden.text.toString() ,tiet_wordua.text.toString()))
-            File(filesDir, "E-st.txt").writeText(wenua.toString())
+            val content = File(filesDir, "E-st.txt").readText()
+            var jsa = JSONArray(content)
+            var jso1 = JSONObject()
+            jso1.put("Виробник", tiet_p1.text.toString())
+            jso1.put("Модель",tiet_p2.text.toString())
+            jso1.put("Колір",tiet_p3.text.toString())
+            jso1.put("Ціна",tiet_p4.text.toString())
+            jso1.put("Опис",tiet_p5.text.toString())
+
+            jsa.put(jso1)
+            File(filesDir, "E-st.txt").writeText(jsa.toString())
         }
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
